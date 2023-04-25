@@ -15,4 +15,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Pull latest changes
         run: |
-          "cd /tmp/test && git pull"
+          ssh root@Friskristet-QA "cd /tmp/test && git pull"
