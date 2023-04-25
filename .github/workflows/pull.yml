@@ -1,0 +1,15 @@
+name: Pull Code
+
+on:
+  push:
+    branches:
+      - main # replace with the name of your main branch
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Pull code
+        run: git pull
