@@ -1,21 +1,21 @@
-name: SSH Pull Workflow
+name: Auto pull changes to SSH repository
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+
 jobs:
-  ssh_pull_job:
+  pull:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.5.0
-      with:
-        host: ${{ secrets.HOST }}
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: Pull from remote repository
-      run: |
-        cd /tmp/test
-        git pull
-
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 159.65.144.36 >> ~/.ssh/known_hosts
+      - name: Push changes to SSH repository
+        run: |
+          ssh root@159.65.144.36 'cd /tmp/test && git pull'
