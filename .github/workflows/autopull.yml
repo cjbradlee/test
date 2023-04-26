@@ -12,6 +12,11 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # add your private key as a secret
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan 159.65.144.36 >> ~/.ssh/known_hosts
+
       - name: SSH into server and pull changes
         run: |
           ssh root@159.65.144.36 "cd /tmp/test && git pull"
