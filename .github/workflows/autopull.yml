@@ -1,25 +1,22 @@
-<<<<<<< HEAD
-=======
 
->>>>>>> d301578b22d89472746ced310249479f67aa3b26
-name: Auto pull changes to SSH repository
-
+name: Auto-pull
 on:
   push:
-    branches: [ main ]
-
+    branches:
+      - main # change to your branch name
 jobs:
   pull:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Configure SSH
+      - name: Install SSH
+        uses: webfactory/ssh-agent@v0.5.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # add your private key as a secret
+      - name: Add host key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan 159.65.144.36 >> ~/.ssh/known_hosts
-      - name: Push changes to SSH repository
+
+      - name: SSH into server and pull changes
         run: |
-          ssh root@159.65.144.36 'cd /tmp/test && git pull'
+          ssh root@159.65.144.36 "cd /tmp/test && git pull"
