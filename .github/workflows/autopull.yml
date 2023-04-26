@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> d301578b22d89472746ced310249479f67aa3b26
 name: Auto pull changes to SSH repository
 
 on:
